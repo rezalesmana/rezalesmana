@@ -1,0 +1,36 @@
+On Leaving von Neumann Architecture
+
+Jonas Boner once said that von Neumann Architecture doesn’t match our current reality anymore [1]. What he means by that, is that the programming approach that we use today by thinking as if the system is running on a single core, is not going to cut it anymore in facing heavy-load performance. Ivan Sutherland explains that the problem why we perceive concurrency as a hard thing to do, is that we are constraining ourselves to the fundamentally sequential von Neumann architecture [2]. John Backus has also already noted the von Neumann bottleneck on his paper for his Turing Award lecture on 1977, “Can Programming Be Liberated From the von Neumann Style?” [3].
+
+In reality, computer nowadays have many cores that is running on GHz already. Intel even has hyper-threading technology where it maximizes each core capability on running tasks. Modern OS is able to maximize multi-core engine to its maximum. Yet, we still program our system as if it only has a single core. We create an abstraction where we program the system on a sequential instructions and let the program to be executed by abstraction of the system’s container multi-threading environment. We let the program to abstract the multi-threading so that we don’t have to deal with it. At first, back when the computer does not have many cores and still low on frequency and not under heavy load, it’s working. Today, this leaky abstraction [4] comes back to bite us.
+
+Nowadays, there are two ways to handle concurrent requests to the server, threaded servers and evented servers. Threaded servers use concurrent multiple threads that handle one incoming request on each thread, meanwhile evented servers run on a single loop that handles the event that comes up for all incoming requests. I personally like the analogy of Bank Teller for the threaded servers [5], but for the evented servers I prefer the simple analogy of a waiter in a restaurant [6].
+
+Threaded server works great when there is no calls to external resources like the file system, the database, or the network. However, in current reality, system makes a lot of calls to external resources. Evented servers performs better than threaded servers. Take a look at the performance calculation example here [7]. Even though the calculation example is oversimplification of threaded servers vs evented servers, it managed to show how the evented server will perform with very high gap when the server is hit by a lot of requests, compared to the threaded servers. The leaky abstraction of threaded servers really bites us hard.
+
+So, what are the examples of evented web server that we have nowadays? There are 3 web servers that use evented servers approach [8]. 
+- Play Framework 
+- NodeJS
+- Twisted
+
+I personally do not like JavaScript, because I’m the type of programmer that is easy to get into callback hell, so I’m not going to poke around NodeJS. Even though many friends suggest that I can easily avoid it [9], but I prefer framework that is making me easy not to get into callback hell [8]. That’s why I’m going to learn about Play Framework. I’m not going to learn about Twisted for now, because I’m only learning about its existence at the time of writing this article. I’ve learned a bit about Scala, and Play runs on Java VM. And also, some of my friends already know how to use Play Framework. So it’s just a matter of which one will be quicker to learn.
+
+Play Framework is created by Lightbend, Inc. Jonas Boner as the founder and CTO of Lightbend, also created Reactive Manifesto, which stands on 4 pillars [10]. 
+- Responsive - react to users
+- Elastic - react to load
+- Resilient - react to failure
+- Message-driven - react to messages
+
+I’m still learning about these 4 pillars, what are these ‘monsters’ actually? So, I will create new post about each one on this Medium blog when I’m learning more about them. And apparently, Lightbend, created Play Framework to be able to do those 4 pillars. So, I will create a series of my journey on learning Play Framework with Scala, learning about reactive engineering on my Github blog [11]. First post will be about playing around with Play Framework. I’m leaving the von Neumann architecture programming approach. Stay tune.
+
+[1] https://www.infoq.com/articles/reactive-programming-anti-patterns
+[2] https://www.youtube.com/watch?v=jR9pAaQlVRc
+[3] http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf
+[4] https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/
+[5] http://tararoys.com/evented-vs-threaded-server-architecture
+[6] https://www.manning.com/books/reactive-web-applications
+[7] https://mmcgrana.github.io/2010/07/threaded-vs-evented-servers.html
+[8] https://engineering.linkedin.com/play/play-framework-async-io-without-thread-pool-and-callback-hell
+[9] http://stackabuse.com/avoiding-callback-hell-in-node-js/
+[10] http://www.reactivemanifesto.org/
+[11] http://rezalesmana.github.io
